@@ -1,6 +1,6 @@
 ## PauseSongInfo
 
-Adds details of the played song to the pause screen :D Commissioned by @SyncBS
+Adds details of the played song to the pause screen :D Commissioned by [Sync](https://www.twitch.tv/sync_bs)
 
 You can also scale down the overall size of the Pause menu by editing the "MenuScale" in the mods config file.
 
