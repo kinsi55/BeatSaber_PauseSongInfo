@@ -12,7 +12,7 @@ The Game version(s) specific releases are compatible with are mentioned in the R
 
 ## Install
 
-#### You can always find the latest download in [The Releases](releases), simply drag the Plugin DLL into the Plugins folder
+#### You can always find the latest download in [The Releases](https://github.com/kinsi55/BeatSaber_PauseSongInfo/releases), simply drag the Plugin DLL into the Plugins folder
 
 ## Added details
 
