@@ -2,7 +2,7 @@
 	"id": "PauseSongInfo",
 	"name": "PauseSongInfo",
 	"author": "Kinsi55",
-	"version": "0.0.1",
+	"version": "1.0.0",
 	"description": "",
 	"gameVersion": "1.18.0",
 	"dependsOn": {
