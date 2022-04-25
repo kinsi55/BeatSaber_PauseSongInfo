@@ -1,0 +1,13 @@
+﻿<horizontal bg="panel-top" preferred-width="71" anchor-pos-x="-2" anchor-pos-y="-25" horizontal-fit="PreferredSize" xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance' xsi:schemaLocation='- https://raw.githubusercontent.com/monkeymanboy/BSML-Docs/gh-pages/BSMLSchema.xsd'>
+
+	<grid cell-size-x="17.5" cell-size-y="5" child-align="MiddleCenter">
+		<macro.for-each items="infos">
+			<horizontal horizontal-fit="Unconstrained" child-align="MiddleCenter" id="container">
+				<horizontal horizontal-fit="PreferredSize" spacing="1">
+					<image id="icon" preserve-aspect="true" preferred-width="3" preferred-height="2"/>
+					<text id="label" align="Center" font-size="3"/>
+				</horizontal>
+			</horizontal>
+		</macro.for-each>
+	</grid>
+</horizontal>
