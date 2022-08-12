@@ -15,7 +15,7 @@ using UnityEngine;
 namespace PauseSongInfo.UI {
 	class InfoUIInfo {
 		[UIComponent("icon")] readonly ImageView icon = null;
-		[UIComponent("label")] readonly TextMeshProUGUI label = null;
+		[UIComponent("label")] public readonly TextMeshProUGUI label = null;
 
 		string _text;
 
@@ -39,7 +39,7 @@ namespace PauseSongInfo.UI {
 		[UIAction("#post-parse")]
 		void Parsed() {
 			if(iconBackup == null) {
-				// This is not cached (yet) https://github.com/monkeymanboy/BeatSaberMarkupLanguage/pull/125
+				// This is cached in BSML
 				icon.SetImage(iconTouse);
 				iconBackup = icon.sprite;
 			} else {
@@ -68,6 +68,9 @@ namespace PauseSongInfo.UI {
 		};
 
 		public static void Create(GameObject gameObject) {
+			if(infos[0].label != null)
+				return;
+
 			gameObject.transform.localScale *= Config.Instance.MenuScale;
 
 			var songLength = HookLeveldata.difficultyBeatmap.level.beatmapLevelData.audioClip.length;
@@ -93,7 +96,11 @@ namespace PauseSongInfo.UI {
 				infos[1].text = x.Result.cuttableNotesCount.ToString();
 				infos[2].text = x.Result.obstaclesCount.ToString();
 				infos[3].text = x.Result.bombsCount.ToString();
-			}, CancellationToken.None, TaskContinuationOptions.None, TaskScheduler.FromCurrentSynchronizationContext());
+
+				// For whatever reason, some times the label font size is set bigger, CBA
+				for(var i = 0; i < 7; i++)
+					infos[i].label.fontSize = 3;
+			}, TaskScheduler.FromCurrentSynchronizationContext());
 #endif
 
 			infos[4].text = TimeSpan.FromSeconds(songLength).ToString(@"mm\:ss");
@@ -112,29 +119,24 @@ namespace PauseSongInfo.UI {
 			);
 		}
 
-		static void GetMapKey() {
+		async static void GetMapKey() {
 			infos[7].text = "...";
 
-			void SetTextMainthread(string text) => IPA.Utilities.Async.UnityMainThreadTaskScheduler.Factory.StartNew(() => infos[7].text = text);
-
-			Task.Run(async () => {
-				if(!SongDetailsUtil.finishedInitAttempt) {
+			infos[7].text = await Task.Run(async () => {
+				if(!SongDetailsUtil.finishedInitAttempt)
 					await SongDetailsUtil.TryGet();
-				}
 
-				if(SongDetailsUtil.songDetails == null) {
-					SetTextMainthread("?");
-					return;
-				}
+				if(SongDetailsUtil.songDetails == null)
+					return "?";
 
 				var mh = BeatmapsUtil.GetHashOfPreview(HookLeveldata.difficultyBeatmap.level);
 
 				if(mh == null ||
 					!SongDetailsUtil.songDetails.instance.songs.FindByHash(mh, out var song)
 				) {
-					SetTextMainthread("?");
+					return "?";
 				} else {
-					SetTextMainthread(song.key.ToUpper());
+					return song.key.ToUpper();
 				}
 			});
 		}
